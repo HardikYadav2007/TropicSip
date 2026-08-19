@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
 :root {
   --primary-orange: #ff6b35;
   --primary-orange-hover: #e85a26;
@@ -172,11 +171,11 @@ a:hover {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-fill-color: transparent;
+  /* text-fill-color: transparent; */
 }
 
 /* Login Modal Styling */
-#main {
+/* #main {
   background: #ffffff;
   border-radius: 24px;
   padding: 40px;
@@ -234,4 +233,5 @@ a:hover {
   border-color: var(--primary-orange);
   box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
   background-color: #ffffff;
-}
+} */
+
