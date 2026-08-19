@@ -4,8 +4,9 @@ export default function Login({ closeModal }) {
         <div id="main">
             {closeModal && (
                 <button 
+                    className="btn btn-secondary"
                     onClick={closeModal} 
-                    style={{ position: 'absolute', top: '20px', left: '20px', cursor: 'pointer', padding: '8px 16px' }}
+                    style={{ position: 'absolute', top: '20px', left: '20px', cursor: 'pointer', padding: '6px 14px', fontSize: '0.85rem' }}
                 >
                     ← Back to Home
                 </button>

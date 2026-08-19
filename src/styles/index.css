@@ -1,30 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-/* Themes */
 :root {
   --primary-orange: #ff6b35;
   --primary-orange-hover: #e85a26;
-  --secondary-mango: #f7b801;
-  --accent-lime: #2ec4b6;
-  --accent-berry: #e63946;
+  --secondary-mango: #ffa200;
+  --accent-lime: #10b981;
+  --accent-berry: #ef4444;
 
-  --bg-main: #0f172a;
-  --bg-card: rgba(30, 41, 59, 0.7);
-  --bg-card-hover: rgba(30, 41, 59, 0.9);
-  --bg-nav: rgba(15, 23, 42, 0.85);
+  --bg-main: #faf9f5;
+  --bg-card: #ffffff;
+  --bg-card-hover: #ffffff;
+  --bg-nav: rgba(255, 255, 255, 0.9);
 
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
   --text-dark: #0f172a;
+  --text-light: #ffffff;
 
-  --border-glass: rgba(255, 255, 255, 0.1);
-  --shadow-glow: 0 10px 30px -10px rgba(255, 107, 53, 0.3);
-  --shadow-card: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --border-glass: rgba(255, 107, 53, 0.15);
+  --border-subtle: #e2e8f0;
+  --shadow-glow: 0 8px 25px -5px rgba(255, 107, 53, 0.35);
+  --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(255, 107, 53, 0.04);
+  --shadow-nav: 0 6px 25px -2px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(255, 107, 53, 0.05);
 
-  --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-family: 'Poppins', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 }
 
-/* Reset and Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -48,10 +49,24 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-/* Anchor Tags */
 a {
-  color: inherit;
+  color: var(--text-main);
   text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--primary-orange);
+}
+
+.link {
+  font-weight: 500;
+  color: var(--text-main);
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--primary-orange);
 }
 
 /* Buttons */
@@ -64,31 +79,43 @@ a {
   font-family: var(--font-family);
   font-weight: 600;
   font-size: 0.95rem;
-  border-radius: 10px;
+  border-radius: 12px;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  background: linear-gradient(135deg, var(--primary-orange), var(--secondary-mango));
+  color: var(--text-light);
+  box-shadow: var(--shadow-glow);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -3px rgba(255, 107, 53, 0.45);
+  filter: brightness(1.05);
 }
 
 .btn-primary {
   background: linear-gradient(135deg, var(--primary-orange), var(--secondary-mango));
-  color: #ffffff;
+  color: var(--text-light);
   box-shadow: var(--shadow-glow);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  filter: brightness(1.1);
+  filter: brightness(1.08);
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.1);
+  background: #f1f5f9;
   color: var(--text-main);
-  border: 1px solid var(--border-glass);
+  border: 1px solid var(--border-subtle);
+  box-shadow: none;
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #e2e8f0;
+  color: var(--primary-orange);
+  border-color: var(--primary-orange);
 }
 
 /* Container */
@@ -98,39 +125,113 @@ a {
   padding: 0 24px;
 }
 
-/* Glassmorphism Effects */
+/* Cards & Components */
 .glass-card {
   background: var(--bg-card);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-glass);
-  border-radius: 16px;
+  border-radius: 20px;
   box-shadow: var(--shadow-card);
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .glass-card:hover {
-  border-color: rgba(255, 107, 53, 0.4);
+  border-color: var(--primary-orange);
+  box-shadow: 0 15px 35px -5px rgba(255, 107, 53, 0.15);
   transform: translateY(-4px);
 }
 
+/* Navigation Bar */
 .NavBar {
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
+  padding: 0.85rem 1.75rem;
   background-color: var(--bg-nav);
-  border-bottom: 1px solid var(--border-glass);
-  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-nav);
   align-items: center;
-  width: 99%;
+  width: calc(100% - 2rem);
   position: sticky;
+  top: 1rem;
+  z-index: 100;
   border-radius: 20px;
-  margin: 10px;
+  margin: 10px auto;
 }
 
 .siteLogo {
   font-size: 2rem;
-  font-weight: 600;
-  color: var(--text-main);
   font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.siteLogo a {
+  background: linear-gradient(135deg, var(--primary-orange), var(--secondary-mango));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+/* Login Modal Styling */
+#main {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 107, 53, 0.15);
+  max-width: 480px;
+  width: 90%;
+  position: relative;
+  margin: 40px auto;
+}
+
+#title {
+  color: var(--text-dark);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, var(--primary-orange), var(--secondary-mango));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+#username,
+#password {
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#username h4,
+#password h4 {
+  color: var(--text-main);
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+#username input,
+#password input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border-subtle);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-family);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#username input:focus,
+#password input:focus {
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+  background-color: #ffffff;
 }
