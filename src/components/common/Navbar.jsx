@@ -1,5 +1,5 @@
 
-function Navbar() {
+function Navbar({ openModal }) {
     const links = ["Home", "Products", "About", "Contact"];
 
     return (
@@ -12,7 +12,7 @@ function Navbar() {
             </ul>
             <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
                 <a href="">Cart</a>
-                <button className="btn">Sign Up</button>
+                <button className="btn" onClick={openModal}>LogIn</button>
             </div>
         </nav>
     );
