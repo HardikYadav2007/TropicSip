@@ -1,8 +1,10 @@
 import Navbar from "../common/Navbar";
+import Footer from "../common/Footer";
 import LoginModal from "../auth/LoginModal";
 import Hero from "../user/Hero";
 import BottleMagic from "../user/bottleMagic";
 import ProductGrid from "../user/ProductGrid";
+import About from "../user/About";
 import { useState } from "react";
 
 export default function HomePage() {
@@ -24,6 +26,8 @@ export default function HomePage() {
                     <Hero />
                     <BottleMagic />
                     <ProductGrid onAddToCart={handleAddToCart} />
+                    <About />
+                    <Footer />
                 </>
             )}
         </div>
