@@ -91,7 +91,8 @@ export default function Login({ closeModal }) {
                 background-size:cover;
                 background-position:center;
                 
-                filter:blur(4px);
+                // filter:blur(4px);
+                filter:brightness(0.3);
                 z-index:-1;
                 }
                 #main{
@@ -131,11 +132,12 @@ export default function Login({ closeModal }) {
                 }
                 #credentials{
                     width:60%;
-                    height:100%;
+                    max-height:100%;
                     display:flex;
                     flex-direction:column;
+                    justify-content:center;
                     padding:20px 20px;
-                    gap:20px;
+                    gap:15px;
                     
                 }
                 input{
@@ -151,7 +153,7 @@ export default function Login({ closeModal }) {
                 }
         
                 #newAccount,#oldAccount{
-                    margin-top:auto;
+                    // margin-top:auto;
                     text-align:center;
                 }
                 .butn{
