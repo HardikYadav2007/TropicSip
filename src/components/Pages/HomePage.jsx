@@ -5,6 +5,7 @@ import Hero from "../user/Hero";
 import BottleMagic from "../user/bottleMagic";
 import ProductGrid from "../user/ProductGrid";
 import About from "../user/About";
+import SellerForm from "../user/SellerForm";
 import { useState } from "react";
 
 export default function HomePage() {
@@ -27,6 +28,7 @@ export default function HomePage() {
                     <BottleMagic />
                     <ProductGrid onAddToCart={handleAddToCart} />
                     <About />
+                    <SellerForm />
                     <Footer />
                 </>
             )}
