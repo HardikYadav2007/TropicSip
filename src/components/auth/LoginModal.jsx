@@ -152,7 +152,7 @@ export default function Login({ closeModal }) {
                 }
         
                 #newAccount,#oldAccount{
-                    // margin-top:auto;
+                    margin-top:auto;
                     text-align:center;
                 }
                 .butn{
