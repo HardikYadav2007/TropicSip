@@ -135,7 +135,6 @@ export default function Login({ closeModal }) {
                     max-height:100%;
                     display:flex;
                     flex-direction:column;
-                    justify-content:center;
                     padding:20px 20px;
                     gap:15px;
                     
