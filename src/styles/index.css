@@ -153,7 +153,6 @@ a:hover {
   box-shadow: var(--shadow-nav);
   align-items: center;
   width: calc(100% - 2rem);
-  position: sticky;
   top: 1rem;
   z-index: 100;
   border-radius: 20px;
@@ -171,7 +170,6 @@ a:hover {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  /* text-fill-color: transparent; */
 }
 
 /* Login Modal Styling */

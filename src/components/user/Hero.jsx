@@ -14,7 +14,7 @@ export default function Hero() {
                     width: calc(100% - 2rem);
                     top: 1rem;
                     border-radius: 20px;
-                    margin: 10px auto;
+                    margin: 50px auto;
                     padding:10px;
                     gap:10px;
                 }
