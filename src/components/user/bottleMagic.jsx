@@ -82,7 +82,7 @@ const BottleMagic = () => {
 
     return (
         <>
-            <h1 style={{ fontSize: "4rem", marginTop: "50px", color: "#2c3e50", marginLeft20px }}>Our Primordial Drinks</h1>
+            <h1 style={{ fontSize: "4rem", marginTop: "50px", color: "#2c3e50", marginLeft: "20px" }}>Our Primordial Drinks</h1>
             <div className="main" style={{ background: currentJuice.gradient }}>
                 <div className="content">
                     <div className={`text_wrapper ${isTextFading ? 'fading' : ''}`}>
