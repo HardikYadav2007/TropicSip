@@ -41,12 +41,12 @@ export default function ProductCard({ product, onAddToCart }) {
                 )}
             </div>
 
-            {/* Product Bottle Visual */}
+            {/*img*/}
             <div className="card-image-wrap" style={{ background: product.bgGradient || 'linear-gradient(135deg, #fff3e0, #ffe0b2)' }}>
                 <img src={product.image} alt={product.name} className="product-image" />
             </div>
 
-            {/* Product Body */}
+            {/*Body */}
             <div className="card-body">
                 <div className="card-header-row">
                     <div>

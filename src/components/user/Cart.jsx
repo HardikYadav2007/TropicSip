@@ -18,15 +18,15 @@ function CartPage({ closeCart }) {
                 )}
                 {
                     cart.map((product, index) =>
-                        (
-                            <div className="card" key={product.id}>
-                                <img src={product.image} alt={product.name} className="product-image" />
-                                <p>{product.name}</p>
-                                <button className="decrement" onClick={() => updateQuantity(product.id, product.qty - 1)}>-</button>
-                                <p className="display">{product.qty}</p>
-                                <button className="increment" onClick={() => updateQuantity(product.id, product.qty + 1)}>+</button>
-                            </div>
-                        )
+                    (
+                        <div className="card" key={product.id}>
+                            <img src={product.image} alt={product.name} className="product-image" />
+                            <p>{product.name}</p>
+                            <button className="decrement" onClick={() => updateQuantity(product.id, product.qty - 1)}>-</button>
+                            <p className="display">{product.qty}</p>
+                            <button className="increment" onClick={() => updateQuantity(product.id, product.qty + 1)}>+</button>
+                        </div>
+                    )
                     )
                 }
             </div>

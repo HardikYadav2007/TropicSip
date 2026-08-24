@@ -36,7 +36,7 @@ export default function ProductGrid({ products = initialProducts, onAddToCart })
                 </p>
             </div>
 
-            {/* Filter & Search Bar */}
+            {/* FilterSearch Bar */}
             <div className="catalog-toolbar">
                 <div className="filter-tabs">
                     {categories.map(cat => (

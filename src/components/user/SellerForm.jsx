@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
 export default function SellerForm() {
-    const [step, setStep] = useState(0); // 0: Collapsed/Intro, 1: Form 1, 2: Form 2, 3: Thanks
+    const [step, setStep] = useState(0);
     const [showInfo, setShowInfo] = useState(false);
     const [contractNumber, setContractNumber] = useState("");
 
-    // Form 1 State
+    // Form 1 data state
     const [formData, setFormData] = useState({
         firstName: "",
         middleName: "",
@@ -57,7 +57,6 @@ export default function SellerForm() {
 
     const handleForm2Submit = (e) => {
         e.preventDefault();
-        // Generate a random 6-digit contract number
         const randomDigits = Math.floor(100000 + Math.random() * 900000);
         setContractNumber(`TS-${randomDigits}`);
         setStep(3);
@@ -98,7 +97,7 @@ export default function SellerForm() {
         <section id="seller-form" className="seller-section">
             <div className="container">
                 <div className="seller-card glass-card">
-                    {/* Header Section (Always Visible) */}
+                    {/* Header Section*/}
                     <div className="seller-header">
                         <span className="seller-badge">🌾 Farmers Direct Portal</span>
                         <h2 className="seller-title">Sell Your Farm Fresh Fruits To Us</h2>
@@ -106,7 +105,7 @@ export default function SellerForm() {
                             Join our trusted network of fruit growers. Sell your harvest directly to TropicSip at transparent, fair market prices with guaranteed fast payouts.
                         </p>
 
-                        {/* Action Buttons (Visible when in step 0 or toggle info) */}
+                        {/* Action Buttons */}
                         {step === 0 && (
                             <div className="seller-btn-group">
                                 <button className="btn btn-primary" onClick={() => setStep(1)}>
@@ -145,7 +144,7 @@ export default function SellerForm() {
                         </div>
                     )}
 
-                    {/* Multi-Step Indicator (Visible when step > 0) */}
+                    {/* progres indicator*/}
                     {step > 0 && (
                         <div className="step-indicator-bar">
                             <div className={`step-item ${step >= 1 ? "active" : ""}`}>
