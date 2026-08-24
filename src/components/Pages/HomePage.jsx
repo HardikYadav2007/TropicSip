@@ -37,6 +37,7 @@ export default function HomePage() {
                         <BottleMagic />
                         <ProductGrid onAddToCart={handleAddToCart} />
                         <About />
+                        <SellerForm/>
                         <Footer />
                     </>
                 )}
