@@ -1,6 +1,9 @@
 import { ShoppingCart } from "lucide-react";
+import { useContext } from "react";
+import { CartContext } from "./CartContext";
+function Navbar({ openModal,openCart }) {
+    const {cart} = useContext(CartContext)
 
-function Navbar({ openModal }) {
     const links = ["Home", "Products", "About", "Contact"];
 
     return (
@@ -12,13 +15,20 @@ function Navbar({ openModal }) {
                 ))}
             </ul>
             <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-                <a href="#" style={{
+                <a href="#" 
+                    onClick={(e)=>{
+                        e.preventDefault();
+                        openCart();
+                    }}
+                
+                style={{
                     display: "flex",
                     gap: "0.5rem",
-                    alignItems: "center"
+                    alignItems: "center",
+                    cursor:"pointer",
                 }}>
                     <ShoppingCart />
-                    <span>Cart</span>
+                    <span>Cart({cart.length})</span>
                 </a>
                 <button className="btn" onClick={openModal}>LogIn</button>
             </div>
