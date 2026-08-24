@@ -5,6 +5,7 @@ import Hero from "../user/Hero";
 import BottleMagic from "../user/bottleMagic";
 import ProductGrid from "../user/ProductGrid";
 import About from "../user/About";
+import SellerForm from "../user/SellerForm";
 import { useState } from "react";
 import { CartProvider } from "../common/CartContext";
 import CartPage from '../user/Cart'
@@ -23,6 +24,7 @@ export default function HomePage() {
 
     return (
         <div>
+
             <CartProvider>
                 {isModalOpen ? (
                     <LoginModal closeModal={closeModal} />
