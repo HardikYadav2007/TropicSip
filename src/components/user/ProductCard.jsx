@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
-
+import React, { useContext, useState } from 'react';
+import { CartContext } from '../common/CartContext';
 export default function ProductCard({ product, onAddToCart }) {
-    const [cartonQty, setCartonQty] = useState(product.minOrderQty || 1);
+
+    const {addToCart,cart} = useContext(CartContext)
+
+    const existingCartItem = cart.find((item)=>item.id===product.id)
+
+    const [cartonQty, setCartonQty] = useState(existingCartItem?.qty ?? product?.minOrderQty ?? 1);
 
     const handleIncrement = () => {
         if (cartonQty < product.stockCartons) {
@@ -16,8 +21,9 @@ export default function ProductCard({ product, onAddToCart }) {
     };
 
     const handleAddToCart = () => {
-        if (onAddToCart) {
-            onAddToCart(product, cartonQty);
+        if (addToCart) {
+            const finalProduct = {...product,qty:cartonQty}
+            addToCart(finalProduct);
         }
     };
 

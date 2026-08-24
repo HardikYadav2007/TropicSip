@@ -30,7 +30,7 @@ export default function Login({ closeModal }) {
                             <p>Password</p>
                             <input type="password" placeholder="Enter your Password" />
                         </div>
-                        <button className='butn'>LOGIN</button>
+                        <button className='butn' onClick={closeModal}>LOGIN</button>
                         <div id="newAccount">
                             <h5>New to TropicSip? <span onClick={() => setView("Signup")}>Create Account</span></h5>
                         </div>
@@ -62,7 +62,7 @@ export default function Login({ closeModal }) {
                             <p>Confirm Password</p>
                             <input type="password" placeholder="confirm your Password" />
                         </div>
-                        <button className='butn'>CREATE ACCOUNT</button>
+                        <button className='butn' onClick={closeModal}>CREATE ACCOUNT</button>
                         <div id="oldAccount">
                             <h5>Already have an account? <span onClick={() => setView("Login")} >Login</span></h5>
                         </div>
@@ -136,6 +136,7 @@ export default function Login({ closeModal }) {
                     display:flex;
                     flex-direction:column;
                     padding:20px 20px;
+                    overflow:auto;
                     gap:15px;
                     
                 }
