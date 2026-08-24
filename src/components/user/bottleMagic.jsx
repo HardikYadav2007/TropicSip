@@ -77,7 +77,7 @@ const BottleMagic = () => {
                 alt: selectedJuice.alt,
             });
             setIsTextFading(false);
-        }, 1500);
+        }, 1100);
     };
 
     return (
@@ -240,7 +240,7 @@ const BottleMagic = () => {
             }
 
             .rotating {
-                animation: rotateAnimation 2s linear;
+                animation: rotateAnimation 1.5s linear;
             }
 
             @keyframes rotateAnimation {
