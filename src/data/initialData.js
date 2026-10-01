@@ -43,7 +43,7 @@ export const initialProducts = [
         category: "Tropical",
         pricePerCarton: 1350,
         unitsPerCarton: 24,
-        stockCartons: 15, // Low stock demo!
+        stockCartons: 15,
         minOrderQty: 3,
         description: "Raw green kiwi puree infused with fresh lime zest. Packed with immunity-boosting nutrients.",
         image: kiwiImg,

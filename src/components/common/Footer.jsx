@@ -30,7 +30,6 @@ function Footer() {
                     </ul>
                 </div>
 
-                {/* Contact Info */}
                 <div className="footer-section">
                     <h3 className="footer-heading">Contact Us</h3>
                     <p className="footer-text">📧 TropicSip@gmail.com</p>
@@ -40,7 +39,6 @@ function Footer() {
 
             </div>
 
-            {/* Bottom Bar */}
             <div className="footer-bottom">
                 <p>© 2026 TropicSip. All rights reserved.</p>
             </div>

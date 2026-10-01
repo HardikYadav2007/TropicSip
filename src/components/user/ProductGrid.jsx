@@ -8,9 +8,9 @@ export default function ProductGrid({ products = initialProducts, onAddToCart })
 
     const categories = ['All', 'Citrus', 'Tropical', 'Berry', 'Organic', '🔥 Bestsellers'];
 
-    // Filter Logic
+    // Filter
     const filteredProducts = products.filter(product => {
-        // Category check
+        // Category
         let matchesCategory = true;
         if (selectedCategory === '🔥 Bestsellers') {
             matchesCategory = product.isPopular;
@@ -18,7 +18,7 @@ export default function ProductGrid({ products = initialProducts, onAddToCart })
             matchesCategory = product.category === selectedCategory;
         }
 
-        // Search query check
+        // Search
         const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             product.flavor.toLowerCase().includes(searchQuery.toLowerCase()) ||
             product.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -36,7 +36,6 @@ export default function ProductGrid({ products = initialProducts, onAddToCart })
                 </p>
             </div>
 
-            {/* FilterSearch Bar */}
             <div className="catalog-toolbar">
                 <div className="filter-tabs">
                     {categories.map(cat => (
@@ -71,13 +70,11 @@ export default function ProductGrid({ products = initialProducts, onAddToCart })
                 </div>
             </div>
 
-            {/* Product Counter Indicator */}
             <div className="results-info">
                 <span>Showing <strong>{filteredProducts.length}</strong> wholesale items</span><br></br>
                 <span>Every Carton Contains <strong>24</strong> Bottles</span>
             </div>
 
-            {/* Grid Container */}
             {filteredProducts.length > 0 ? (
                 <div className="grid-layout">
                     {filteredProducts.map(item => (
