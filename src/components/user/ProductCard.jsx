@@ -1,28 +1,34 @@
 import React, { useContext, useState } from 'react';
 import { CartContext } from '../common/CartContext';
+import { useAuth } from '../../context/AuthContext';
+
 export default function ProductCard({ product, onAddToCart }) {
+    const { addToCart, cart } = useContext(CartContext);
+    const { currentUser } = useAuth();
+    const isAdmin = currentUser?.role === "admin" || currentUser?.role === "superadmin";
 
-    const {addToCart,cart} = useContext(CartContext)
-
-    const existingCartItem = cart.find((item)=>item.id===product.id)
+    const existingCartItem = cart.find((item) => item.id === product.id);
 
     const [cartonQty, setCartonQty] = useState(existingCartItem?.qty ?? product?.minOrderQty ?? 1);
 
     const handleIncrement = () => {
+        if (isAdmin) return;
         if (cartonQty < product.stockCartons) {
             setCartonQty(prev => prev + 1);
         }
     };
 
     const handleDecrement = () => {
+        if (isAdmin) return;
         if (cartonQty > (product.minOrderQty || 1)) {
             setCartonQty(prev => prev - 1);
         }
     };
 
     const handleAddToCart = () => {
+        if (isAdmin) return;
         if (addToCart) {
-            const finalProduct = {...product,qty:cartonQty}
+            const finalProduct = { ...product, qty: cartonQty };
             addToCart(finalProduct);
         }
     };
@@ -85,7 +91,7 @@ export default function ProductCard({ product, onAddToCart }) {
                             type="button"
                             className="qty-btn"
                             onClick={handleDecrement}
-                            disabled={cartonQty <= (product.minOrderQty || 1)}
+                            disabled={isAdmin || cartonQty <= (product.minOrderQty || 1)}
                             aria-label="Decrease quantity"
                         >
                             -
@@ -95,7 +101,7 @@ export default function ProductCard({ product, onAddToCart }) {
                             type="button"
                             className="qty-btn"
                             onClick={handleIncrement}
-                            disabled={cartonQty >= product.stockCartons}
+                            disabled={isAdmin || cartonQty >= product.stockCartons}
                             aria-label="Increase quantity"
                         >
                             +
@@ -104,10 +110,12 @@ export default function ProductCard({ product, onAddToCart }) {
 
                     <button
                         type="button"
-                        className="btn btn-primary add-cart-btn"
+                        className={`btn btn-primary add-cart-btn ${isAdmin ? 'admin-disabled' : ''}`}
                         onClick={handleAddToCart}
+                        disabled={isAdmin}
+                        title={isAdmin ? "Admins cannot place orders through the storefront" : `Add ${cartonQty} to Cart`}
                     >
-                        Add {cartonQty} to Cart
+                        {isAdmin ? "Disabled for Admin" : `Add ${cartonQty} to Cart`}
                     </button>
                 </div>
             </div>
@@ -368,6 +376,25 @@ export default function ProductCard({ product, onAddToCart }) {
                     font-size: 0.88rem;
                     border-radius: 12px;
                     white-space: nowrap;
+                }
+
+                .add-cart-btn:disabled,
+                .add-cart-btn.admin-disabled {
+                    opacity: 0.55;
+                    cursor: not-allowed !important;
+                    background: #94a3b8 !important;
+                    border-color: #94a3b8 !important;
+                    color: #ffffff !important;
+                    box-shadow: none !important;
+                    transform: none !important;
+                    filter: none !important;
+                }
+
+                [data-theme="dark"] .add-cart-btn:disabled,
+                [data-theme="dark"] .add-cart-btn.admin-disabled {
+                    background: #334155 !important;
+                    border-color: #334155 !important;
+                    color: #94a3b8 !important;
                 }
             `}</style>
         </div>

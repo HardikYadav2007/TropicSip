@@ -1,4 +1,5 @@
-import { createContext,useState } from "react";
+import { createContext, useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 export const CartContext = createContext({
     cart: [],
@@ -7,9 +8,21 @@ export const CartContext = createContext({
 })
 
 export function CartProvider({children}){
-    const [cart,setCart] = useState([])
+    const [cart,setCart] = useState([]);
+    const { currentUser } = useAuth();
+    const isAdmin = currentUser?.role === "admin" || currentUser?.role === "superadmin";
+
+    // Clear cart if admin logs in or is active
+    useEffect(() => {
+        if (isAdmin && cart.length > 0) {
+            setCart([]);
+        }
+    }, [isAdmin]);
 
     const addToCart = (product)=>{
+        if (isAdmin) {
+            return;
+        }
         setCart((prevCart)=>{
 
             const existingItem = prevCart.find((item)=>item.id===product.id)
@@ -27,6 +40,9 @@ export function CartProvider({children}){
     }
 
     const updateQuantity = (id,newqty)=>{
+        if (isAdmin) {
+            return;
+        }
         if(newqty===0){
             setCart((prevCart) => prevCart.filter((product) => product.id !== id));
         }

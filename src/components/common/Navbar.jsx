@@ -10,21 +10,16 @@ function Navbar({ openModal, openCart }) {
     const { theme, toggleTheme } = useTheme();
 
     const links = ["Home", "Products", "About", "Contact"];
-
-    const handleNavClick = (link) => {
-        if (currentView === "admin") {
-            setCurrentView("home");
-        }
-    };
+    const isAdmin = currentUser?.role === "admin" || currentUser?.role === "superadmin";
 
     return (
         <nav className="NavBar">
             <h1 className="siteLogo">
                 <a 
-                    href="#home" 
+                    href={currentView === "admin" ? "#" : "#home"} 
                     onClick={(e) => {
                         if (currentView === "admin") {
-                            // Keep default or allow switching
+                            e.preventDefault();
                         }
                     }}
                 >
@@ -32,19 +27,21 @@ function Navbar({ openModal, openCart }) {
                 </a>
             </h1>
 
-            <ul style={{ display: "flex", gap: "1rem", alignItems: "center", listStyle: "none" }}>
-                {links.map((link, index) => (
-                    <li key={index}>
-                        <a 
-                            href={`#${link.toLowerCase()}`} 
-                            className="link"
-                            onClick={() => handleNavClick(link)}
-                        >
-                            {link}
-                        </a>
-                    </li>
-                ))}
-            </ul>
+            {/* Navigation links - hidden in Admin portal */}
+            {currentView !== "admin" && (
+                <ul style={{ display: "flex", gap: "1rem", alignItems: "center", listStyle: "none" }}>
+                    {links.map((link, index) => (
+                        <li key={index}>
+                            <a 
+                                href={`#${link.toLowerCase()}`} 
+                                className="link"
+                            >
+                                {link}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            )}
 
             <div style={{ display: "flex", gap: "0.85rem", alignItems: "center" }}>
                 {/* Dark/Light Mode Theme Toggle Button */}
@@ -61,24 +58,26 @@ function Navbar({ openModal, openCart }) {
                     )}
                 </button>
 
-                {/* Cart Icon (shown on store view) */}
-                <a 
-                    href="#" 
-                    onClick={(e) => {
-                        e.preventDefault();
-                        if (openCart) openCart();
-                    }}
-                    style={{
-                        display: "flex",
-                        gap: "0.5rem",
-                        alignItems: "center",
-                        cursor: "pointer",
-                        fontWeight: 500
-                    }}
-                >
-                    <ShoppingCart size={18} />
-                    <span>Cart({cart?.length || 0})</span>
-                </a>
+                {/* Cart Icon - NOT visible to admin or inside admin portal */}
+                {!isAdmin && currentView !== "admin" && (
+                    <a 
+                        href="#" 
+                        onClick={(e) => {
+                            e.preventDefault();
+                            if (openCart) openCart();
+                        }}
+                        style={{
+                            display: "flex",
+                            gap: "0.5rem",
+                            alignItems: "center",
+                            cursor: "pointer",
+                            fontWeight: 500
+                        }}
+                    >
+                        <ShoppingCart size={18} />
+                        <span>Cart({cart?.length || 0})</span>
+                    </a>
+                )}
 
                 {/* Authentication & Role Controls */}
                 {currentUser ? (
