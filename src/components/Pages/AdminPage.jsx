@@ -4,6 +4,7 @@ import DashboardView from "../admin/views/DashboardView";
 import OrdersView from "../admin/views/OrdersView";
 import PaymentsView from "../admin/views/PaymentsView";
 import CustomersView from "../admin/views/CustomersView";
+import FarmersView from "../admin/views/FarmersView";
 import ReportsView from "../admin/views/ReportsView";
 import StatisticsView from "../admin/views/StatisticsView";
 import NotificationsView from "../admin/views/NotificationsView";
@@ -28,6 +29,8 @@ export default function AdminPage() {
                 return <PaymentsView />;
             case "customers":
                 return <CustomersView />;
+            case "farmers":
+                return <FarmersView />;
             case "reports":
                 return <ReportsView />;
             case "statistics":

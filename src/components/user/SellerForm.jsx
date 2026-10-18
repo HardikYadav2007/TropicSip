@@ -58,7 +58,43 @@ export default function SellerForm() {
     const handleForm2Submit = (e) => {
         e.preventDefault();
         const randomDigits = Math.floor(100000 + Math.random() * 900000);
-        setContractNumber(`TS-${randomDigits}`);
+        const newContract = `TS-${randomDigits}`;
+        setContractNumber(newContract);
+
+        // Collect all selected fruits
+        const activeFruits = Object.keys(selectedFruits).filter(k => selectedFruits[k]);
+        if (selectedFruits.Others && formData.othersFruit) {
+            activeFruits.push(formData.othersFruit.trim());
+        }
+
+        const newSubmission = {
+            id: `SUB-${Date.now()}`,
+            contractNumber: newContract,
+            submittedAt: new Date().toISOString(),
+            farmerName: `${formData.firstName} ${formData.middleName ? formData.middleName + ' ' : ''}${formData.lastName}`.trim(),
+            email: formData.email,
+            phone: formData.phone,
+            address: formData.address,
+            city: formData.city,
+            state: formData.state,
+            pincode: formData.pincode,
+            country: formData.country || "India",
+            aadhar: formData.aadhar,
+            pan: formData.pan,
+            quantity: formData.quantity,
+            fruits: activeFruits.length > 0 ? activeFruits : ["Mixed Fruits"],
+            status: "Pending Review",
+            adminNotes: ""
+        };
+
+        try {
+            const saved = localStorage.getItem("tropicsip_farmer_submissions");
+            const existing = saved ? JSON.parse(saved) : [];
+            localStorage.setItem("tropicsip_farmer_submissions", JSON.stringify([newSubmission, ...existing]));
+        } catch (err) {
+            console.error("Failed to save farmer submission to localStorage:", err);
+        }
+
         setStep(3);
     };
 

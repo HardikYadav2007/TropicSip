@@ -155,4 +155,6 @@ export const authenticateAccount = (identifier, password) => {
         (acc.username.toLowerCase() === cleanId || acc.email.toLowerCase() === cleanId) &&
         acc.password === cleanPass
     ) || null;
-};
+};
+
+

@@ -13,7 +13,8 @@ import {
     Sun, 
     Moon,
     X,
-    ShieldCheck
+    ShieldCheck,
+    Wheat
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
@@ -27,6 +28,7 @@ export default function AdminSidebar({ activeSection, onSelectSection, isOpen, o
         { id: "orders", label: "Orders", icon: Package },
         { id: "payments", label: "Payments", icon: CreditCard },
         { id: "customers", label: "Customers", icon: Users },
+        { id: "farmers", label: "Farmer Submissions", icon: Wheat },
         { id: "reports", label: "Reports", icon: FileText },
         { id: "statistics", label: "Statistics", icon: TrendingUp },
     ];
