@@ -165,8 +165,14 @@ export default function ProductCard({ product, onAddToCart }) {
 
                 .badge-category {
                     background: rgba(255, 255, 255, 0.85);
-                    color: var(--text-dark);
+                    color: #0f172a;
                     border: 1px solid rgba(0, 0, 0, 0.05);
+                }
+
+                [data-theme="dark"] .badge-category {
+                    background: rgba(15, 23, 42, 0.85);
+                    color: #f8fafc;
+                    border: 1px solid rgba(255, 255, 255, 0.15);
                 }
 
                 .card-image-wrap {
@@ -243,6 +249,11 @@ export default function ProductCard({ product, onAddToCart }) {
                     align-items: center;
                 }
 
+                [data-theme="dark"] .spec-pill {
+                    background: #0b0f19;
+                    border-color: var(--border-subtle);
+                }
+
                 .spec-label {
                     font-size: 0.7rem;
                     color: var(--text-muted);
@@ -296,6 +307,12 @@ export default function ProductCard({ product, onAddToCart }) {
                     border-radius: 12px;
                     padding: 4px;
                     border: 1px solid var(--border-subtle);
+                    transition: background-color 0.25s ease, border-color 0.25s ease;
+                }
+
+                [data-theme="dark"] .quantity-control {
+                    background: #0b0f19;
+                    border-color: var(--border-subtle);
                 }
 
                 .qty-btn {
@@ -315,13 +332,24 @@ export default function ProductCard({ product, onAddToCart }) {
                     box-shadow: 0 2px 4px rgba(0,0,0,0.04);
                 }
 
+                [data-theme="dark"] .qty-btn {
+                    background: #1e293b;
+                    color: var(--text-dark);
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+                }
+
                 .qty-btn:hover:not(:disabled) {
                     background: var(--primary-orange);
                     color: #ffffff;
                 }
 
+                [data-theme="dark"] .qty-btn:hover:not(:disabled) {
+                    background: var(--primary-orange);
+                    color: #ffffff;
+                }
+
                 .qty-btn:disabled {
-                    opacity: 0.4;
+                    opacity: 0.35;
                     cursor: not-allowed;
                 }
 
@@ -331,6 +359,7 @@ export default function ProductCard({ product, onAddToCart }) {
                     font-weight: 700;
                     font-size: 0.95rem;
                     color: var(--text-dark);
+                    transition: color 0.25s ease;
                 }
 
                 .add-cart-btn {

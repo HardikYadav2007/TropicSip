@@ -94,18 +94,65 @@ export const initialProducts = [
     }
 ];
 
-// Default System user ans roles --- No Need till phase 2 ---
-// export const initialUsers =[
-//     {
-//         id: "usr_1",
-//         name: "name1",
-//         email: "[EMAIL_ADDRESS]",
-//         password: "[PASSWORD]",
-//         role: "admin",
-//         department: "Stock & inventory Management",
-//         isSystem: false
-//     },
-//     {id:"usr_2",name:"name2",email:"[EMAIL_ADDRESS]",password:"[PASSWORD]",role:"admin",department:"Wholesale Order Processing",isSystem:false},
-//     {id:"usr_3",name:"name3",email:"[EMAIL_ADDRESS]",password:"[PASSWORD]",role:"admin",department:"Direct Sales & Customer Service",isSystem:false},
-//     {id:"usr_4",name:"name4",email:"[EMAIL_ADDRESS]",password:"[PASSWORD]",role:"super_admin",department:"Executive & Admin Controls",isSystem:true},
-// ];
+// ==========================================
+// 🗄️ Temporary Database Arrays (Phase 2)
+// ==========================================
+
+// 1. Regular Customer / Wholesale Buyer Accounts
+export const initialUsers = [
+    {
+        id: "usr_1",
+        name: "Rahul Sharma",
+        username: "customer",
+        email: "customer@tropicsip.com",
+        password: "user123",
+        role: "user",
+        company: "FreshMart Retail",
+        phone: "+91 98765 43210"
+    }
+];
+
+// 2. Admin Accounts (Single common admin for development as requested)
+export const initialAdmins = [
+    {
+        id: "admin_1",
+        name: "TropicSip Admin",
+        username: "admin",
+        email: "admin@tropicsip.com",
+        password: "admin123",
+        role: "admin",
+        department: "Stock & Inventory Management",
+        isSystem: false
+    }
+];
+
+// 3. Super Admin Accounts
+export const initialSuperAdmins = [
+    {
+        id: "super_1",
+        name: "Super Administrator",
+        username: "superadmin",
+        email: "superadmin@tropicsip.com",
+        password: "super123",
+        role: "superadmin",
+        department: "Executive & Admin Controls",
+        isSystem: true
+    }
+];
+
+// Helper to get all accounts combined for authentication lookup
+export const getAllAccounts = () => {
+    return [...initialSuperAdmins, ...initialAdmins, ...initialUsers];
+};
+
+// Authentication helper
+export const authenticateAccount = (identifier, password) => {
+    const cleanId = (identifier || "").trim().toLowerCase();
+    const cleanPass = (password || "").trim();
+
+    const all = getAllAccounts();
+    return all.find(acc =>
+        (acc.username.toLowerCase() === cleanId || acc.email.toLowerCase() === cleanId) &&
+        acc.password === cleanPass
+    ) || null;
+};

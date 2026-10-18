@@ -151,11 +151,12 @@ export default function ProductGrid({ products = initialProducts, onAddToCart })
                     gap: 20px;
                     flex-wrap: wrap;
                     margin-bottom: 24px;
-                    background: #ffffff;
+                    background: var(--bg-card);
                     padding: 14px 20px;
                     border-radius: 20px;
                     border: 1px solid var(--border-glass);
                     box-shadow: var(--shadow-card);
+                    transition: background-color 0.25s ease, border-color 0.25s ease;
                 }
 
                 .filter-tabs {
@@ -183,14 +184,27 @@ export default function ProductGrid({ products = initialProducts, onAddToCart })
                     transition: all 0.25s ease;
                 }
 
+                [data-theme="dark"] .tab-btn {
+                    background: #0b0f19;
+                    color: var(--text-main);
+                    border: 1px solid var(--border-subtle);
+                }
+
                 .tab-btn:hover {
                     background: #f1f5f9;
                     color: var(--primary-orange);
                 }
 
+                [data-theme="dark"] .tab-btn:hover {
+                    background: #1e293b;
+                    color: var(--primary-orange);
+                    border-color: var(--primary-orange);
+                }
+
                 .tab-btn.active {
                     background: linear-gradient(135deg, var(--primary-orange), var(--secondary-mango));
                     color: #ffffff;
+                    border-color: transparent;
                     box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
                 }
 
@@ -202,13 +216,13 @@ export default function ProductGrid({ products = initialProducts, onAddToCart })
                     border-radius: 12px;
                     padding: 8px 14px;
                     min-width: 260px;
-                    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+                    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
                 }
 
                 .search-box:focus-within {
                     border-color: var(--primary-orange);
                     box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
-                    background: #ffffff;
+                    background: var(--bg-card);
                 }
 
                 .search-icon {

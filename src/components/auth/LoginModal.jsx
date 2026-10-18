@@ -1,14 +1,83 @@
 import fruitbg from '../../assets/fruit.jpg'
 import { useState } from 'react'
+import { useAuth } from '../../context/AuthContext'
+
 export default function Login({ closeModal }) {
-    const [view, setView] = useState("Login")
+    const { login, signupUser } = useAuth();
+    const [view, setView] = useState("Login");
+
+    // Login Form State
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+
+    // Signup Form State
+    const [signupData, setSignupData] = useState({
+        name: "",
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+    });
+
+    const handleLoginSubmit = (e) => {
+        if (e) e.preventDefault();
+        setError("");
+
+        if (!username.trim() || !password.trim()) {
+            setError("Please enter both username/email and password.");
+            return;
+        }
+
+        const res = login(username, password);
+        if (res.success) {
+            if (closeModal) closeModal();
+        } else {
+            setError(res.error || "Invalid username or password.");
+        }
+    };
+
+    const handleSignupSubmit = (e) => {
+        if (e) e.preventDefault();
+        setError("");
+
+        if (!signupData.username.trim() || !signupData.email.trim() || !signupData.password.trim()) {
+            setError("Please fill in all required fields.");
+            return;
+        }
+
+        if (signupData.password !== signupData.confirmPassword) {
+            setError("Passwords do not match.");
+            return;
+        }
+
+        const res = signupUser({
+            name: signupData.name,
+            username: signupData.username,
+            email: signupData.email,
+            password: signupData.password
+        });
+
+        if (res.success) {
+            if (closeModal) closeModal();
+        } else {
+            setError(res.error || "Failed to create account.");
+        }
+    };
+
+    const fillAdminCredentials = () => {
+        setUsername("admin");
+        setPassword("admin123");
+        setError("");
+    };
+
     return <>
         <div id="main">
             {closeModal && (
                 <button
                     className="btn btn-secondary"
                     onClick={closeModal}
-                    style={{ position: 'absolute', top: '20px', left: '20px', cursor: 'pointer', padding: '6px 14px', fontSize: '0.85rem' }}
+                    style={{ position: 'absolute', top: '20px', left: '20px', cursor: 'pointer', padding: '6px 14px', fontSize: '0.85rem', zIndex: 10 }}
                 >
                     ← Back to Home
                 </button>
@@ -18,59 +87,126 @@ export default function Login({ closeModal }) {
                 <>
                     <div id="message">
                         <h1 id="title">Welcome back!</h1>
-                        <p>Welcome back User,Please login to continue shopping.</p>
+                        <p>Welcome back! Enter credentials to access Customer or Admin portal.</p>
                     </div>
 
                     <div id="credentials">
-                        <div id="username">
-                            <p>Username</p>
-                            <input type="text" placeholder="Enter your username" />
+                        {error && (
+                            <div className="login-error-alert">
+                                ⚠️ {error}
+                            </div>
+                        )}
+
+                        {/* Quick Demo Admin Credential Button for easy testing */}
+                        <div 
+                            className="quick-admin-pill"
+                            onClick={fillAdminCredentials}
+                            title="Click to auto-fill common Dev Admin credentials"
+                        >
+                            ⚡ <strong>Dev Admin:</strong> <span>admin / admin123</span> <small>(Click to fill)</small>
                         </div>
-                        <div id="password">
-                            <p>Password</p>
-                            <input type="password" placeholder="Enter your Password" />
-                        </div>
-                        <button className='butn' onClick={closeModal}>LOGIN</button>
+
+                        <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%' }}>
+                            <div id="username">
+                                <p>Username or Email</p>
+                                <input 
+                                    type="text" 
+                                    placeholder="Enter 'admin' or username" 
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    autoFocus
+                                />
+                            </div>
+                            <div id="password">
+                                <p>Password</p>
+                                <input 
+                                    type="password" 
+                                    placeholder="Enter your Password" 
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
+                            <button type="submit" className='butn'>LOGIN</button>
+                        </form>
+
                         <div id="newAccount">
-                            <h5>New to TropicSip? <span onClick={() => setView("Signup")}>Create Account</span></h5>
+                            <h5>New to TropicSip? <span onClick={() => { setView("Signup"); setError(""); }}>Create Account</span></h5>
                         </div>
                     </div>
                 </>
             )
                 :
-
                 (<>
                     <div id="message">
                         <h1 id="title">Hello User!</h1>
-                        <p>Create your account and dive into shopping with us.</p>
+                        <p>Create your account and dive into wholesale shopping with us.</p>
                     </div>
 
                     <div id="credentials">
-                        <div id="username">
-                            <p>Username</p>
-                            <input type="text" placeholder="Enter your username" />
-                        </div>
-                        <div id='email'>
-                            <p>Email</p>
-                            <input type="email" placeholder="Enter your username" />
-                        </div>
-                        <div id="password">
-                            <p>Password</p>
-                            <input type="password" placeholder="Enter your Password" />
-                        </div>
-                        <div id="confirmPassword">
-                            <p>Confirm Password</p>
-                            <input type="password" placeholder="confirm your Password" />
-                        </div>
-                        <button className='butn' onClick={closeModal}>CREATE ACCOUNT</button>
+                        {error && (
+                            <div className="login-error-alert">
+                                ⚠️ {error}
+                            </div>
+                        )}
+
+                        <form onSubmit={handleSignupSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%' }}>
+                            <div id="username">
+                                <p>Full Name</p>
+                                <input 
+                                    type="text" 
+                                    placeholder="Enter your name" 
+                                    value={signupData.name}
+                                    onChange={(e) => setSignupData({ ...signupData, name: e.target.value })}
+                                />
+                            </div>
+                            <div id="username">
+                                <p>Username</p>
+                                <input 
+                                    type="text" 
+                                    placeholder="Choose a username" 
+                                    value={signupData.username}
+                                    onChange={(e) => setSignupData({ ...signupData, username: e.target.value })}
+                                />
+                            </div>
+                            <div id='email'>
+                                <p>Email</p>
+                                <input 
+                                    type="email" 
+                                    placeholder="Enter your email" 
+                                    value={signupData.email}
+                                    onChange={(e) => setSignupData({ ...signupData, email: e.target.value })}
+                                />
+                            </div>
+                            <div id="password">
+                                <p>Password</p>
+                                <input 
+                                    type="password" 
+                                    placeholder="Enter your Password" 
+                                    value={signupData.password}
+                                    onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
+                                />
+                            </div>
+                            <div id="confirmPassword">
+                                <p>Confirm Password</p>
+                                <input 
+                                    type="password" 
+                                    placeholder="Confirm your Password" 
+                                    value={signupData.confirmPassword}
+                                    onChange={(e) => setSignupData({ ...signupData, confirmPassword: e.target.value })}
+                                />
+                            </div>
+                            <button type="submit" className='butn'>CREATE ACCOUNT</button>
+                        </form>
+
                         <div id="oldAccount">
-                            <h5>Already have an account? <span onClick={() => setView("Login")} >Login</span></h5>
+                            <h5>Already have an account? <span onClick={() => { setView("Login"); setError(""); }} >Login</span></h5>
                         </div>
                     </div>
                 </>)
             }
 
         </div>
+
 
         <style>{`
         body, #root{
@@ -174,6 +310,42 @@ export default function Login({ closeModal }) {
                 span{
                 color:#FF4500;
                 cursor:pointer;
+                }
+
+                .login-error-alert {
+                    background-color: #fee2e2;
+                    border: 1px solid #ef4444;
+                    color: #b91c1c;
+                    padding: 8px 14px;
+                    border-radius: 8px;
+                    font-size: 0.9rem;
+                    font-weight: 500;
+                    margin-bottom: 5px;
+                }
+
+                .quick-admin-pill {
+                    background: rgba(255, 107, 53, 0.1);
+                    border: 1px dashed #ff6b35;
+                    border-radius: 8px;
+                    padding: 8px 12px;
+                    font-size: 0.85rem;
+                    color: #334155;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                }
+                .quick-admin-pill:hover {
+                    background: rgba(255, 107, 53, 0.18);
+                    transform: translateY(-1px);
+                }
+                .quick-admin-pill span {
+                    color: #d9480f;
+                    font-weight: 600;
+                }
+                .quick-admin-pill small {
+                    color: #64748b;
                 }
         `}
         </style>

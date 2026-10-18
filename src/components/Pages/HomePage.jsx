@@ -24,24 +24,21 @@ export default function HomePage() {
 
     return (
         <div>
-
-            <CartProvider>
-                {isModalOpen ? (
-                    <LoginModal closeModal={closeModal} />
-                ) : isCartOpen ?(
-                    <CartPage closeCart = {closeCart}/>
-                ) :(
-                    <>
-                        <Navbar openModal={openModal} openCart={openCart} />
-                        <Hero />
-                        <BottleMagic />
-                        <ProductGrid onAddToCart={handleAddToCart} />
-                        <About />
-                        <SellerForm/>
-                        <Footer />
-                    </>
-                )}
-            </CartProvider>
+            {isModalOpen ? (
+                <LoginModal closeModal={closeModal} />
+            ) : isCartOpen ?(
+                <CartPage closeCart = {closeCart}/>
+            ) :(
+                <>
+                    <Navbar openModal={openModal} openCart={openCart} />
+                    <Hero />
+                    <BottleMagic />
+                    <ProductGrid onAddToCart={handleAddToCart} />
+                    <About />
+                    <SellerForm/>
+                    <Footer />
+                </>
+            )}
         </div>
     );
 }
