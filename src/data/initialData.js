@@ -6,6 +6,12 @@ import kiwiImg from '../assets/kiwi_juice.jpg';
 import plumImg from '../assets/plum_juice.jpg';
 import mangoImg from '../assets/mango_juice.jpg';
 import passionImg from '../assets/passion_juice.jpg';
+import guavaImg from '../assets/guava_juice.jpg';
+import pomegranateImg from '../assets/pomegranate_juice.jpg';
+import appleImg from '../assets/apple_juice.jpg';
+import pineappleImg from '../assets/pineapple_juice.jpg';
+import blueberryImg from '../assets/blueberry_juice.jpg';
+import lemonMintImg from '../assets/lemon_mint_juice.jpg';
 
 export const initialProducts = [
     {
@@ -91,6 +97,90 @@ export const initialProducts = [
         image: passionImg,
         isPopular: false,
         bgGradient: "linear-gradient(135deg, #FFFDE7, #FFF59D)"
+    },
+    {
+        id: "prod_7",
+        name: "Pink Guava Nectar",
+        flavor: "Ripe Tropical Pink Guava",
+        category: "Tropical",
+        pricePerCarton: 1300,
+        unitsPerCarton: 24,
+        stockCartons: 75,
+        minOrderQty: 2,
+        description: "Velvety sweet cold-pressed pink guava with natural pectin, rich in dietary fiber and vitamin C.",
+        image: guavaImg,
+        isPopular: true,
+        bgGradient: "linear-gradient(135deg, #FCE4EC, #F8BBD0)"
+    },
+    {
+        id: "prod_8",
+        name: "Royal Pomegranate Ruby",
+        flavor: "Pure Mountain Ruby",
+        category: "Organic",
+        pricePerCarton: 1650,
+        unitsPerCarton: 24,
+        stockCartons: 55,
+        minOrderQty: 2,
+        description: "100% pure aril extract from deep red Bhagwa pomegranates. Loaded with heart-healthy polyphenols.",
+        image: pomegranateImg,
+        isPopular: true,
+        bgGradient: "linear-gradient(135deg, #FFEBEE, #FFCDD2)"
+    },
+    {
+        id: "prod_9",
+        name: "Crisp Himalayan Apple",
+        flavor: "Golden Orchard Crisp",
+        category: "Organic",
+        pricePerCarton: 1400,
+        unitsPerCarton: 24,
+        stockCartons: 90,
+        minOrderQty: 2,
+        description: "Unfiltered crisp apple nectar from high-altitude Kinnaur & Shimla orchards. Naturally crisp and sweet.",
+        image: appleImg,
+        isPopular: true,
+        bgGradient: "linear-gradient(135deg, #FFFDE7, #FFF9C4)"
+    },
+    {
+        id: "prod_10",
+        name: "Golden Pineapple Zing",
+        flavor: "Queen Pineapple Crisp",
+        category: "Tropical",
+        pricePerCarton: 1250,
+        unitsPerCarton: 24,
+        stockCartons: 110,
+        minOrderQty: 2,
+        description: "Sweet and tangy Queen pineapple juice with crushed mint undertones. Pure tropical sunshine.",
+        image: pineappleImg,
+        isPopular: false,
+        bgGradient: "linear-gradient(135deg, #FFF8E1, #FFECB3)"
+    },
+    {
+        id: "prod_11",
+        name: "Wild Blueberry & Berry",
+        flavor: "Forest Berry Medley",
+        category: "Berry",
+        pricePerCarton: 1750,
+        unitsPerCarton: 24,
+        stockCartons: 35,
+        minOrderQty: 3,
+        description: "Deep violet antioxidant powerhouse crafted from hand-picked wild blueberries and tart mountain blackberries.",
+        image: blueberryImg,
+        isPopular: false,
+        bgGradient: "linear-gradient(135deg, #EDE7F6, #D1C4E9)"
+    },
+    {
+        id: "prod_12",
+        name: "Zesty Lemon Mint Cooler",
+        flavor: "Sparkling Citrus Breeze",
+        category: "Citrus",
+        pricePerCarton: 1100,
+        unitsPerCarton: 24,
+        stockCartons: 130,
+        minOrderQty: 2,
+        description: "Invigorating blend of Kagzi lemon, Persian lime, and freshly crushed garden spearmint leaves.",
+        image: lemonMintImg,
+        isPopular: true,
+        bgGradient: "linear-gradient(135deg, #F9FBE7, #F0F4C3)"
     }
 ];
 
@@ -107,8 +197,18 @@ export const initialUsers = [
         email: "customer@tropicsip.com",
         password: "user123",
         role: "user",
-        company: "FreshMart Retail",
+        company: "FreshMart Retail & Grocers",
         phone: "+91 98765 43210"
+    },
+    {
+        id: "usr_2",
+        name: "Priya Nair",
+        username: "priyanair",
+        email: "priya@greenorganic.in",
+        password: "user123",
+        role: "user",
+        company: "Green Leaf Organics",
+        phone: "+91 98234 56789"
     }
 ];
 

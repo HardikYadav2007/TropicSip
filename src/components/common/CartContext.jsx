@@ -4,7 +4,9 @@ import { useAuth } from "../../context/AuthContext";
 export const CartContext = createContext({
     cart: [],
     addToCart: () => {},
-    updateQuantity: () => {}
+    updateQuantity: () => {},
+    clearCart: () => {},
+    setCart: () => {}
 })
 
 export function CartProvider({children}){
@@ -54,8 +56,12 @@ export function CartProvider({children}){
         }
     }
 
+    const clearCart = () => {
+        setCart([]);
+    }
+
     return (
-        <CartContext.Provider value={{cart,addToCart,updateQuantity}}>
+        <CartContext.Provider value={{cart, addToCart, updateQuantity, clearCart, setCart}}>
             {children}
         </CartContext.Provider>
     )

@@ -79,7 +79,8 @@
     box-shadow: var(--shadow-card, 0 2px 4px rgba(0,0,0,0.05));
 }
 
-.product-image {
+.cart-sidebar .cart-item-image,
+.cart-sidebar .product-image {
     height: 70px;
     width: 70px;
     object-fit: cover;

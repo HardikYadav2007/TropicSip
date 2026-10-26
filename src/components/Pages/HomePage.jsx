@@ -44,12 +44,12 @@ export default function HomePage() {
                     <BottleMagic />
                     <ProductGrid onAddToCart={handleAddToCart} />
                     <About />
-                    <SellerForm />
+                    <SellerForm openModal={openModal} />
                     <Footer />
 
-                    /* 3. Render the Cart ON TOP of the main page */
+                    {/* 3. Render the Cart ON TOP of the main page */}
                     {(!isAdmin && isCartOpen) && (
-                        <CartPage closeCart={closeCart} />
+                        <CartPage closeCart={closeCart} openModal={openModal} />
                     )}
                 </>
             )}
