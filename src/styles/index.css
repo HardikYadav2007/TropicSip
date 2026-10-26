@@ -860,6 +860,7 @@ a:hover {
 [data-theme="dark"] .about-story,
 [data-theme="dark"] .admin-hero-card,
 [data-theme="dark"] .admin-module-card,
+[data-theme="dark"] .seller-card,
 [data-theme="dark"] .seller-form-card,
 [data-theme="dark"] .card {
   background-color: var(--bg-card);
@@ -918,6 +919,18 @@ a:hover {
   background-color: #131b2e;
 }
 
+[data-theme="dark"] .btn-secondary {
+  background-color: #19233c;
+  color: var(--text-dark);
+  border-color: var(--border-subtle);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background-color: #243048;
+  color: var(--primary-orange);
+  border-color: var(--primary-orange);
+}
+
 [data-theme="dark"] .btn-nav-switch,
 [data-theme="dark"] .btn-secondary-action {
   background-color: var(--bg-card);
@@ -939,9 +952,24 @@ a:hover {
   border-color: var(--border-subtle);
 }
 
+[data-theme="dark"] .fruit-chip,
 [data-theme="dark"] .fruit-checkbox-card {
-  background-color: var(--bg-card);
+  background-color: #19233c;
+  color: var(--text-dark);
   border-color: var(--border-subtle);
+}
+
+[data-theme="dark"] .fruit-chip:hover {
+  background-color: #202d4d;
+  color: var(--primary-orange);
+  border-color: var(--primary-orange);
+}
+
+[data-theme="dark"] .fruit-chip.selected {
+  background-color: rgba(255, 107, 53, 0.22);
+  color: #ff8c5a;
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 14px rgba(255, 107, 53, 0.3);
 }
 
 [data-theme="dark"] .admin-status-banner {
