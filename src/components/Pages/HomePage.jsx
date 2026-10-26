@@ -31,13 +31,13 @@ export default function HomePage() {
         alert(`🛒 Added ${quantity} cartons of "${product.name}" to wholesale order request!`);
     };
 
-    return (
+   return (
         <div>
             {isModalOpen ? (
+                /* 1. If Login is open, ONLY render the Login component (full screen) */
                 <LoginModal closeModal={closeModal} />
-            ) : (!isAdmin && isCartOpen) ? (
-                <CartPage closeCart={closeCart} />
             ) : (
+                /* 2. Otherwise, render the main page */
                 <>
                     <Navbar openModal={openModal} openCart={isAdmin ? null : openCart} />
                     <Hero />
@@ -46,6 +46,11 @@ export default function HomePage() {
                     <About />
                     <SellerForm />
                     <Footer />
+
+                    /* 3. Render the Cart ON TOP of the main page */
+                    {(!isAdmin && isCartOpen) && (
+                        <CartPage closeCart={closeCart} />
+                    )}
                 </>
             )}
         </div>

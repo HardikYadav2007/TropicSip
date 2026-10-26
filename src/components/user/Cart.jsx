@@ -1,115 +1,148 @@
-import { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { CartContext } from "../common/CartContext";
+import './cart.css' // Importing the separate CSS file
 
 function CartPage({ closeCart }) {
-    const { cart, updateQuantity } = useContext(CartContext)
+    // Assuming setCart or clearCart is available in your Context to empty the cart after ordering
+    const { cart, updateQuantity, setCart } = useContext(CartContext);
+    
+    const [view, setView] = useState('cart'); // 'cart' or 'address'
+    const [savedAddresses, setSavedAddresses] = useState([]);
+    const [selectedAddress, setSelectedAddress] = useState('');
+    const [newAddress, setNewAddress] = useState('');
+
+    // Load saved addresses from local storage when component mounts
+    useEffect(() => {
+        const customers = JSON.parse(localStorage.getItem('customers')) || [];
+        const addresses = customers.map(c => c.address).filter(Boolean);
+        setSavedAddresses(addresses);
+    }, []);
+
+    const handlePlaceOrder = () => {
+        const finalAddress = newAddress || selectedAddress;
+        if (!finalAddress) {
+            alert("Please select or enter an address.");
+            return;
+        }
+
+        // 1. Fetch existing orders
+        const existingOrders = JSON.parse(localStorage.getItem('allOrders')) || [];
+        
+        // 2. Create the new order object
+        const newOrder = {
+            orderId: "TS-" + Math.floor(1000 + Math.random() * 9000),
+            date: new Date().toLocaleString(),
+            address: finalAddress,
+            items: cart,
+        };
+
+        // 3. Save order to local storage for the Admin Panel
+        existingOrders.push(newOrder);
+        localStorage.setItem('allOrders', JSON.stringify(existingOrders));
+        
+        // 4. Save new address to customers list if they typed a new one
+        if (newAddress) {
+            const customers = JSON.parse(localStorage.getItem('customers')) || [];
+            customers.push({ id: Date.now(), name: "Guest User", address: newAddress });
+            localStorage.setItem('customers', JSON.stringify(customers));
+        }
+
+        // 5. Clear cart and close
+        if (setCart) setCart([]); // Clears the cart if you exported setCart from Context
+        alert("Order Placed Successfully!");
+        closeCart();
+    };
 
     return (
-        <>
-            <div id="main">
-                {closeCart && (
-                    <button
-                        className="btn btn-secondary"
-                        onClick={closeCart}
-                        style={{ position: 'absolute', top: '20px', left: '20px', cursor: 'pointer', padding: '6px 14px', fontSize: '0.85rem' }}
-                    >
-                        ← Back to Home
-                    </button>
-                )}
-                {
-                    cart.map((product, index) =>
-                    (
-                        <div className="card" key={product.id}>
-                            <img src={product.image} alt={product.name} className="product-image" />
-                            <p>{product.name}</p>
-                            <button className="decrement" onClick={() => updateQuantity(product.id, product.qty - 1)}>-</button>
-                            <p className="display">{product.qty}</p>
-                            <button className="increment" onClick={() => updateQuantity(product.id, product.qty + 1)}>+</button>
+        <div className="cart-overlay" onClick={closeCart}>
+            <div className="cart-sidebar" onClick={(e) => e.stopPropagation()}>
+                
+                {/* Header */}
+                <div className="cart-header">
+                    <h3>{view === 'cart' ? 'My Cart' : 'Select Delivery Address'}</h3>
+                    <button className="close-btn" onClick={closeCart}>✕</button>
+                </div>
+
+                {/* Body Content */}
+                <div className="cart-body">
+                    {view === 'cart' ? (
+                        /* --- CART ITEMS VIEW --- */
+                        cart.length === 0 ? (
+                            <p className="empty-cart">Your cart is empty.</p>
+                        ) : (
+                            cart.map((product) => (
+                                <div className="card" key={product.id}>
+                                    <img src={product.image} alt={product.name} className="product-image" />
+                                    <div className="product-details">
+                                        <p>{product.name}</p>
+                                        <div className="quantity-controls">
+                                            <button className="decrement" onClick={() => updateQuantity(product.id, product.qty - 1)}>-</button>
+                                            <p className="display">{product.qty}</p>
+                                            <button className="increment" onClick={() => updateQuantity(product.id, product.qty + 1)}>+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        )
+                    ) : (
+                        /* --- ADDRESS SELECTION VIEW --- */
+                        <div className="address-container">
+                            {savedAddresses.length > 0 && (
+                                <div className="saved-addresses">
+                                    <h4>Saved Addresses</h4>
+                                    {savedAddresses.map((addr, idx) => (
+                                        <label key={idx} className="address-label">
+                                            <input 
+                                                type="radio" 
+                                                name="address" 
+                                                value={addr} 
+                                                onChange={(e) => { 
+                                                    setSelectedAddress(e.target.value); 
+                                                    setNewAddress(''); 
+                                                }} 
+                                            />
+                                            <span className="address-text">{addr}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                            
+                            <h4>Add New Address</h4>
+                            <textarea 
+                                className="address-input"
+                                rows="3" 
+                                placeholder="Enter your full complete address..." 
+                                value={newAddress} 
+                                onChange={(e) => { 
+                                    setNewAddress(e.target.value); 
+                                    setSelectedAddress(''); 
+                                }}
+                            />
                         </div>
-                    )
-                    )
-                }
+                    )}
+                </div>
+
+                {/* Footer Action Button */}
+                <div className="cart-footer">
+                    {view === 'cart' ? (
+                        <button 
+                            className="checkout-btn"
+                            onClick={() => setView('address')} 
+                            disabled={cart.length === 0}
+                        >
+                            Proceed to Checkout <span>&gt;</span>
+                        </button>
+                    ) : (
+                        <div className="address-actions">
+                            <button className="back-btn" onClick={() => setView('cart')}>Back to Cart</button>
+                            <button className="checkout-btn" onClick={handlePlaceOrder}>Place Order</button>
+                        </div>
+                    )}
+                </div>
+
             </div>
-
-            <style>{`
-                /* Main container to keep everything centered and neat */
-                #main {
-                    max-width: 800px;
-                    margin: 80px auto 40px; /* Top margin makes room for the Back button */
-                    padding: 0 20px;
-                    font-family: var(--font-family);
-                    color: var(--text-main);
-                }
-
-    /* The Cart Item Card */
-                .card {
-                    display: flex;
-                    align-items: center;
-                    gap: 20px;
-                    background: var(--bg-card);
-                    border: 1px solid var(--border-subtle);
-                    border-radius: 12px;
-                    padding: 16px 24px;
-                    margin-bottom: 16px;
-                    box-shadow: var(--shadow-card);
-                    transition: transform 0.2s ease, box-shadow 0.2s ease;
-                }
-
-                .card:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
-                }
-
-    /* Product Image */
-                .product-image {
-                    height: 90px;
-                    width: 90px;
-                    object-fit: cover;
-                    border-radius: 8px;
-                }
-
-    /* Product Name */
-                .card p:not(.display) {
-                    flex-grow: 1; /* This forces the text to take up empty space, pushing buttons to the right */
-                    font-size: 1.1rem;
-                    font-weight: 600;
-                    color: var(--text-dark);
-                    margin: 0;
-                }
-
-    /* Quantity Buttons (+ and -) */
-                .increment, .decrement {
-                    background-color: var(--bg-main);
-                    border: 1px solid var(--border-subtle);
-                    border-radius: 8px;
-                    width: 36px;
-                    height: 36px;
-                    font-size: 1.2rem;
-                    color: var(--text-dark);
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    transition: all 0.2s;
-                }
-
-                .increment:hover, .decrement:hover {
-                    background-color: var(--primary-orange);
-                    color: #ffffff;
-                    border-color: var(--primary-orange);
-                }
-
-                /* The Number Display */
-                .display {
-                    font-size: 1.1rem;
-                    font-weight: 700;
-                    min-width: 32px;
-                    text-align: center;
-                    color: var(--text-dark);
-                    margin: 0;
-                }
-`}</style>
-        </>
-    )
+        </div>
+    );
 }
+
 export default CartPage;

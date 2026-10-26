@@ -59,6 +59,20 @@ export default function Login({ closeModal }) {
         });
 
         if (res.success) {
+            // --- NEW CODE: Save to Admin Customers List ---
+            const existingCustomers = JSON.parse(localStorage.getItem('customers')) || [];
+            const newCustomer = {
+                id: Date.now(),
+                name: signupData.name,
+                username: signupData.username,
+                email: signupData.email,
+                joinDate: new Date().toLocaleDateString(),
+                address: "" // Leaves room for the checkout page to update this later
+            };
+            existingCustomers.push(newCustomer);
+            localStorage.setItem('customers', JSON.stringify(existingCustomers));
+            // ----------------------------------------------
+
             if (closeModal) closeModal();
         } else {
             setError(res.error || "Failed to create account.");
