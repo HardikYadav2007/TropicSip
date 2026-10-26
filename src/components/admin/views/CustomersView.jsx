@@ -1,74 +1,52 @@
 ﻿import React, { useState, useEffect } from 'react';
-import './CustomerView.css';
-import { getCustomers } from '../../../data/customers';
+import './CustomerView.css'; // Import the new CSS file
 
-export default function AdminCustomers() {
+export default function CustomersView() {
     const [customers, setCustomers] = useState([]);
 
     useEffect(() => {
-        setCustomers(getCustomers());
+        const storedCustomers = JSON.parse(localStorage.getItem('customers')) || [];
+        setCustomers(storedCustomers);
     }, []);
 
     return (
-        <div className='admin-customers-container'>
-            <div
-                style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    borderBottom: '2px solid #333',
-                    paddingBottom: '16px',
-                    marginBottom: '20px',
-                    flexWrap: 'wrap',
-                    gap: '10px'
-                }}
-            >
-                <div>
-                    <h2 className='admin-customers-title'>👥 Customer Accounts Directory</h2>
-                    <p style={{ color: '#aaa', margin: 0, fontSize: '0.95rem' }}>
-                        Registered customer accounts and retail partners. New user registrations automatically appear below.
-                    </p>
-                </div>
-                <div style={{ background: '#2a2a3d', padding: '8px 16px', borderRadius: '8px', fontSize: '0.9rem' }}>
-                    Total Customers: <strong style={{ color: '#ff7b00' }}>{customers.length}</strong>
-                </div>
-            </div>
+        <div className="admin-customers-container">
+            <h2 className="admin-customers-title">Customer Management</h2>
 
             {customers.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '40px', background: '#1e1e2f', borderRadius: '12px' }}>
-                    <p style={{ color: '#888', fontSize: '1.1rem' }}>No customer accounts have registered yet.</p>
-                </div>
+                <p className="admin-customers-empty">No customers have registered yet.</p>
             ) : (
-                <div className='admin-table-wrapper'>
-                    <table className='admin-table'>
+                <div className="admin-table-wrapper">
+                    <table className="admin-table">
                         <thead>
                             <tr>
-                                <th>Name & Business</th>
+                                <th>Name</th>
                                 <th>Username</th>
-                                <th>Email Address</th>
-                                <th>Phone Number</th>
-                                <th>Address / Location</th>
-                                <th>Joined Date</th>
+                                <th>Email</th>
+                                <th>Saved Addresses</th>
+                                <th>Join Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             {customers.map((customer) => (
                                 <tr key={customer.id}>
-                                    <td>
-                                        <strong style={{ color: '#fff', fontSize: '0.95rem' }}>{customer.name || 'N/A'}</strong>
-                                        {customer.company && (
-                                            <div style={{ color: '#ff9f43', fontSize: '0.82rem', marginTop: '2px' }}>
-                                                🏢 {customer.company}
-                                            </div>
+                                    <td>{customer.name || "N/A"}</td>
+                                    <td className="text-muted username-col">@{customer.username}</td>
+                                    <td>{customer.email}</td>
+                                    <td className="address-col">
+                                        {customer.addresses && customer.addresses.length > 0 ? (
+                                            <ul className="address-list">
+                                                {customer.addresses.map((addr, i) => (
+                                                    <li key={i}>{addr}</li>
+                                                ))}
+                                            </ul>
+                                        ) : customer.address ? (
+                                            <span className="text-success">{customer.address}</span>
+                                        ) : (
+                                            <span className="text-muted">No address added yet</span>
                                         )}
                                     </td>
-                                    <td style={{ color: '#ff7b00' }}>@{customer.username}</td>
-                                    <td style={{ color: '#ddd' }}>{customer.email || 'N/A'}</td>
-                                    <td style={{ color: '#aaa' }}>{customer.phone || 'Not provided'}</td>
-                                    <td style={{ color: '#888', maxWidth: '280px' }}>
-                                        {customer.address ? `${customer.address}${customer.city ? `, ${customer.city}` : ''}` : 'Address on file'}
-                                    </td>
-                                    <td style={{ color: '#888' }}>{customer.joinDate || 'Recent'}</td>
+                                    <td className="text-muted">{customer.joinDate}</td>
                                 </tr>
                             ))}
                         </tbody>

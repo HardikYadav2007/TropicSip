@@ -29,35 +29,24 @@ export default function Cart({ closeCart, openModal }) {
         };
     }, []);
 
+    // Load the logged-in user's saved addresses
     useEffect(() => {
-        let addresses = [];
-
         if (currentUser) {
-            const profile = findCustomer(currentUser.id || currentUser.email || currentUser.username);
-            if (profile && profile.address) {
-                addresses.push(profile.address);
+            // Read from your friend's new v2 database, fallback to the old one
+            const customers = JSON.parse(localStorage.getItem('tropicsip_customers_v2')) || JSON.parse(localStorage.getItem('customers')) || [];
+            const activeCustomer = customers.find(c => c.username === currentUser.username);
+            
+            if (activeCustomer && activeCustomer.addresses && activeCustomer.addresses.length > 0) {
+                setSavedAddresses(activeCustomer.addresses);
+            } else if (activeCustomer && activeCustomer.address) {
+                setSavedAddresses([activeCustomer.address]);
+            } else {
+                setSavedAddresses([]); // CRITICAL: Empties the list if the user has no saved addresses
             }
-            if (currentUser.address) {
-                addresses.push(currentUser.address);
-            }
+        } else {
+            setSavedAddresses([]);
         }
-
-        try {
-            const legacyCustomers = JSON.parse(localStorage.getItem('customers') || '[]');
-            legacyCustomers.forEach((customer) => {
-                if (customer.address && !addresses.includes(customer.address)) {
-                    addresses.push(customer.address);
-                }
-            });
-        } catch (error) {
-            // ignore storage issues
-        }
-
-        setSavedAddresses(addresses);
-        if (addresses.length > 0 && !selectedAddress) {
-            setSelectedAddress(addresses[0]);
-        }
-    }, [currentUser, selectedAddress]);
+    }, [currentUser]);
 
     const handleProceedToCheckout = () => {
         if (!currentUser) {
@@ -108,29 +97,21 @@ export default function Cart({ closeCart, openModal }) {
             addCustomerOrder(null, newOrder);
         }
 
-        if (newAddress.trim() && currentUser) {
-            try {
-                const customers = JSON.parse(localStorage.getItem('customers') || '[]');
-                const customerIndex = customers.findIndex((customer) => customer.username === currentUser.username);
-
-                if (customerIndex !== -1) {
-                    const list = [...customers];
-                    const customer = list[customerIndex];
-                    const addresses = customer.addresses || [];
-
-                    if (!addresses.includes(newAddress.trim())) {
-                        addresses.push(newAddress.trim());
-                    }
-
-                    list[customerIndex] = {
-                        ...customer,
-                        addresses,
-                        address: newAddress.trim()
-                    };
-                    localStorage.setItem('customers', JSON.stringify(list));
+        // Save new address to the customer's profile
+        if (newAddress && currentUser) {
+            const customers = JSON.parse(localStorage.getItem('tropicsip_customers_v2')) || JSON.parse(localStorage.getItem('customers')) || [];
+            const customerIndex = customers.findIndex(c => c.username === currentUser.username);
+            
+            if (customerIndex !== -1) {
+                if (!customers[customerIndex].addresses) {
+                    customers[customerIndex].addresses = [];
                 }
-            } catch (error) {
-                // ignore storage issues
+                customers[customerIndex].addresses.push(newAddress);
+                customers[customerIndex].address = newAddress; // Keep legacy address string updated
+                
+                // Save to BOTH keys to satisfy your friend's new logic
+                localStorage.setItem('tropicsip_customers_v2', JSON.stringify(customers));
+                localStorage.setItem('customers', JSON.stringify(customers));
             }
         }
 

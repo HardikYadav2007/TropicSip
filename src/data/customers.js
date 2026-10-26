@@ -75,13 +75,13 @@ const LEGACY_CUSTOMERS_KEY = "customers";
 const SUBMISSIONS_KEY = "tropicsip_farmer_submissions_v2";
 
 // Retrieve customers list from localStorage or initialize with 2 seed customers
+// Retrieve customers list from localStorage or initialize with 2 seed customers
 export const getCustomers = () => {
     try {
         const saved = localStorage.getItem(CUSTOMERS_KEY);
         if (saved) {
             const parsed = JSON.parse(saved);
             if (Array.isArray(parsed) && parsed.length > 0) {
-                // Return only customer details (no nested orders/applications in Phase 2)
                 return parsed.map(c => ({
                     id: c.id,
                     name: c.name,
@@ -90,6 +90,7 @@ export const getCustomers = () => {
                     phone: c.phone || "",
                     company: c.company || "Wholesale Partner",
                     address: c.address || "",
+                    addresses: c.addresses || [], // <-- Added this to prevent deletion
                     city: c.city || "",
                     state: c.state || "",
                     pincode: c.pincode || "",
@@ -101,7 +102,6 @@ export const getCustomers = () => {
     } catch (e) {
         console.error("Error reading customers from localStorage:", e);
     }
-    // Seed default 2 customers
     saveCustomers(initialCustomers);
     return initialCustomers;
 };
@@ -117,6 +117,7 @@ export const saveCustomers = (customersList) => {
             phone: c.phone || "",
             company: c.company || "Wholesale Partner",
             address: c.address || "",
+            addresses: c.addresses || [], // <-- Added this to prevent deletion
             city: c.city || "",
             state: c.state || "",
             pincode: c.pincode || "",
