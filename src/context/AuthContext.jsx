@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { initialUsers, initialAdmins, initialSuperAdmins } from "../data/initialData";
+import { registerOrUpdateCustomer } from "../data/customers";
 
 export const AuthContext = createContext({
     currentUser: null,
@@ -33,7 +34,18 @@ export function AuthProvider({ children }) {
     // 2. Current Session State
     const [currentUser, setCurrentUser] = useState(() => {
         const saved = localStorage.getItem("tropicsip_auth_user");
-        return saved ? JSON.parse(saved) : null;
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                if (parsed.role === "user") {
+                    registerOrUpdateCustomer(parsed);
+                }
+                return parsed;
+            } catch (e) {
+                console.error("Failed to parse saved user", e);
+            }
+        }
+        return null;
     });
 
     // 3. Current Active View ('home' | 'admin' | 'superadmin')
@@ -88,6 +100,11 @@ export function AuthProvider({ children }) {
             setCurrentUser(match);
             localStorage.setItem("tropicsip_auth_user", JSON.stringify(match));
 
+            // Sync with customers database if customer user
+            if (match.role === "user") {
+                registerOrUpdateCustomer(match);
+            }
+
             // Role-based view redirection
             if (match.role === "admin" || match.role === "superadmin") {
                 setCurrentView("admin");
@@ -139,6 +156,10 @@ export function AuthProvider({ children }) {
         setUsers(prev => [...prev, newUser]);
         setCurrentUser(newUser);
         localStorage.setItem("tropicsip_auth_user", JSON.stringify(newUser));
+        
+        // Sync with customers data
+        registerOrUpdateCustomer(newUser);
+
         setCurrentView("home");
 
         return { success: true, user: newUser };

@@ -59,30 +59,10 @@ export default function Login({ closeModal }) {
         });
 
         if (res.success) {
-            // --- NEW CODE: Save to Admin Customers List ---
-            const existingCustomers = JSON.parse(localStorage.getItem('customers')) || [];
-            const newCustomer = {
-                id: Date.now(),
-                name: signupData.name,
-                username: signupData.username,
-                email: signupData.email,
-                joinDate: new Date().toLocaleDateString(),
-                address: "" // Leaves room for the checkout page to update this later
-            };
-            existingCustomers.push(newCustomer);
-            localStorage.setItem('customers', JSON.stringify(existingCustomers));
-            // ----------------------------------------------
-
             if (closeModal) closeModal();
         } else {
             setError(res.error || "Failed to create account.");
         }
-    };
-
-    const fillAdminCredentials = () => {
-        setUsername("admin");
-        setPassword("admin123");
-        setError("");
     };
 
     return <>
@@ -110,15 +90,6 @@ export default function Login({ closeModal }) {
                                 ⚠️ {error}
                             </div>
                         )}
-
-                        {/* Quick Demo Admin Credential Button for easy testing */}
-                        <div 
-                            className="quick-admin-pill"
-                            onClick={fillAdminCredentials}
-                            title="Click to auto-fill common Dev Admin credentials"
-                        >
-                            ⚡ <strong>Dev Admin:</strong> <span>admin / admin123</span> <small>(Click to fill)</small>
-                        </div>
 
                         <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%' }}>
                             <div id="username">
@@ -335,31 +306,6 @@ export default function Login({ closeModal }) {
                     font-size: 0.9rem;
                     font-weight: 500;
                     margin-bottom: 5px;
-                }
-
-                .quick-admin-pill {
-                    background: rgba(255, 107, 53, 0.1);
-                    border: 1px dashed #ff6b35;
-                    border-radius: 8px;
-                    padding: 8px 12px;
-                    font-size: 0.85rem;
-                    color: #334155;
-                    cursor: pointer;
-                    transition: all 0.2s ease;
-                    display: flex;
-                    align-items: center;
-                    gap: 6px;
-                }
-                .quick-admin-pill:hover {
-                    background: rgba(255, 107, 53, 0.18);
-                    transform: translateY(-1px);
-                }
-                .quick-admin-pill span {
-                    color: #d9480f;
-                    font-weight: 600;
-                }
-                .quick-admin-pill small {
-                    color: #64748b;
                 }
         `}
         </style>
