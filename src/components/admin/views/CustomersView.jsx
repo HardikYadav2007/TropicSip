@@ -1,40 +1,52 @@
 import React, { useState, useEffect } from 'react';
+import './CustomerView.css'; // Import the new CSS file
 
-export default function CustomersView() {
+export default function AdminCustomers() {
     const [customers, setCustomers] = useState([]);
 
     useEffect(() => {
-        // Fetch customers from local storage when the component loads
         const storedCustomers = JSON.parse(localStorage.getItem('customers')) || [];
         setCustomers(storedCustomers);
     }, []);
 
     return (
-        <div style={{ padding: '30px', color: '#fff', width: '100%' }}>
-            <h2 style={{ borderBottom: '2px solid #333', paddingBottom: '10px', color: '#ff7b00' }}>
-                Customer Management
-            </h2>
+        <div className="admin-customers-container">
+            <h2 className="admin-customers-title">Customer Management</h2>
 
             {customers.length === 0 ? (
-                <p style={{ color: '#888', marginTop: '20px' }}>No customers have registered yet.</p>
+                <p className="admin-customers-empty">No customers have registered yet.</p>
             ) : (
-                <div style={{ marginTop: '20px', overflowX: 'auto' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', background: '#1e1e2f', borderRadius: '8px', overflow: 'hidden' }}>
+                <div className="admin-table-wrapper">
+                    <table className="admin-table">
                         <thead>
-                            <tr style={{ background: '#2a2a3d', textAlign: 'left' }}>
-                                <th style={{ padding: '15px', borderBottom: '1px solid #333' }}>Name</th>
-                                <th style={{ padding: '15px', borderBottom: '1px solid #333' }}>Username</th>
-                                <th style={{ padding: '15px', borderBottom: '1px solid #333' }}>Email</th>
-                                <th style={{ padding: '15px', borderBottom: '1px solid #333' }}>Join Date</th>
+                            <tr>
+                                <th>Name</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Saved Addresses</th>
+                                <th>Join Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             {customers.map((customer) => (
-                                <tr key={customer.id} style={{ borderBottom: '1px solid #333' }}>
-                                    <td style={{ padding: '15px' }}>{customer.name || "N/A"}</td>
-                                    <td style={{ padding: '15px', color: '#aaa' }}>@{customer.username}</td>
-                                    <td style={{ padding: '15px' }}>{customer.email}</td>
-                                    <td style={{ padding: '15px', color: '#888' }}>{customer.joinDate}</td>
+                                <tr key={customer.id}>
+                                    <td>{customer.name || "N/A"}</td>
+                                    <td className="text-muted username-col">@{customer.username}</td>
+                                    <td>{customer.email}</td>
+                                    <td className="address-col">
+                                        {customer.addresses && customer.addresses.length > 0 ? (
+                                            <ul className="address-list">
+                                                {customer.addresses.map((addr, i) => (
+                                                    <li key={i}>{addr}</li>
+                                                ))}
+                                            </ul>
+                                        ) : customer.address ? (
+                                            <span className="text-success">{customer.address}</span>
+                                        ) : (
+                                            <span className="text-muted">No address added yet</span>
+                                        )}
+                                    </td>
+                                    <td className="text-muted">{customer.joinDate}</td>
                                 </tr>
                             ))}
                         </tbody>

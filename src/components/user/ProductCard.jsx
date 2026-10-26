@@ -29,7 +29,11 @@ export default function ProductCard({ product, onAddToCart }) {
     const handleAddToCart = () => {
         if (isAdmin) return;
         if (addToCart) {
-            const finalProduct = { ...product, qty: cartonQty };
+            const finalProduct = { 
+                ...product, 
+                price: product.pricePerCarton, // Maps your product price to 'price'
+                quantity: cartonQty            // Maps your 'cartonQty' to 'quantity'
+            };
             addToCart(finalProduct);
         }
     };

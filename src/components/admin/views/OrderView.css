@@ -1,0 +1,86 @@
+/* Container and Typography */
+.orders-view-container {
+    padding: 30px;
+    color: #fff;
+    width: 100%;
+}
+
+.orders-view-title {
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+    color: #ff7b00;
+    margin-top: 0;
+}
+
+.orders-view-empty {
+    color: #888;
+    margin-top: 20px;
+}
+
+/* Table Wrapper */
+.orders-table-wrapper {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+/* Main Table Styles */
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #1e1e2f;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.orders-table thead tr {
+    background: #2a2a3d;
+    text-align: left;
+}
+
+.orders-table th {
+    padding: 15px;
+    border-bottom: 1px solid #333;
+    font-weight: 600;
+}
+
+.orders-table tbody tr {
+    border-bottom: 1px solid #333;
+}
+
+.orders-table td {
+    padding: 15px;
+    vertical-align: top;
+}
+
+/* Specific Column & Text Styles */
+.order-id-col {
+    font-weight: bold;
+    color: #ff7b00;
+}
+
+.date-col {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.address-col {
+    max-width: 250px;
+    line-height: 1.4;
+}
+
+.items-list {
+    margin: 0;
+    padding-left: 20px;
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+.items-list li {
+    margin-bottom: 4px;
+}
+
+.total-col {
+    color: #4ade80;
+    font-weight: bold;
+    font-size: 1.1rem;
+}

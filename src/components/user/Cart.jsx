@@ -1,21 +1,35 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from 'react';
+import { useAuth } from "../../context/AuthContext";
 import { CartContext } from "../common/CartContext";
-import './cart.css' // Importing the separate CSS file
+import './cart.css';
 
-function CartPage({ closeCart }) {
-    // Assuming setCart or clearCart is available in your Context to empty the cart after ordering
+export default function Cart({ closeCart }) {
     const { cart, updateQuantity, setCart } = useContext(CartContext);
+    const { currentUser } = useAuth(); 
     
-    const [view, setView] = useState('cart'); // 'cart' or 'address'
+    const [view, setView] = useState('cart'); 
     const [savedAddresses, setSavedAddresses] = useState([]);
     const [selectedAddress, setSelectedAddress] = useState('');
     const [newAddress, setNewAddress] = useState('');
 
-    // Load saved addresses from local storage when component mounts
     useEffect(() => {
-        const customers = JSON.parse(localStorage.getItem('customers')) || [];
-        const addresses = customers.map(c => c.address).filter(Boolean);
-        setSavedAddresses(addresses);
+        if (currentUser) {
+            const customers = JSON.parse(localStorage.getItem('customers')) || [];
+            const activeCustomer = customers.find(c => c.username === currentUser.username);
+            
+            if (activeCustomer && activeCustomer.addresses) {
+                setSavedAddresses(activeCustomer.addresses);
+            } else if (activeCustomer && activeCustomer.address) {
+                setSavedAddresses([activeCustomer.address]);
+            }
+        }
+    }, [currentUser]);
+
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
     }, []);
 
     const handlePlaceOrder = () => {
@@ -25,124 +39,125 @@ function CartPage({ closeCart }) {
             return;
         }
 
-        // 1. Fetch existing orders
         const existingOrders = JSON.parse(localStorage.getItem('allOrders')) || [];
-        
-        // 2. Create the new order object
         const newOrder = {
             orderId: "TS-" + Math.floor(1000 + Math.random() * 9000),
             date: new Date().toLocaleString(),
             address: finalAddress,
+            customerUsername: currentUser?.username || "Guest",
             items: cart,
         };
 
-        // 3. Save order to local storage for the Admin Panel
         existingOrders.push(newOrder);
         localStorage.setItem('allOrders', JSON.stringify(existingOrders));
         
-        // 4. Save new address to customers list if they typed a new one
-        if (newAddress) {
+        if (newAddress && currentUser) {
             const customers = JSON.parse(localStorage.getItem('customers')) || [];
-            customers.push({ id: Date.now(), name: "Guest User", address: newAddress });
-            localStorage.setItem('customers', JSON.stringify(customers));
+            const customerIndex = customers.findIndex(c => c.username === currentUser.username);
+            
+            if (customerIndex !== -1) {
+                if (!customers[customerIndex].addresses) {
+                    customers[customerIndex].addresses = [];
+                }
+                customers[customerIndex].addresses.push(newAddress);
+                customers[customerIndex].address = newAddress;
+                localStorage.setItem('customers', JSON.stringify(customers));
+            }
         }
 
-        // 5. Clear cart and close
-        if (setCart) setCart([]); // Clears the cart if you exported setCart from Context
+        if (setCart) setCart([]); 
         alert("Order Placed Successfully!");
         closeCart();
+    };
+
+    const calculateTotal = () => {
+        return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
     };
 
     return (
         <div className="cart-overlay" onClick={closeCart}>
             <div className="cart-sidebar" onClick={(e) => e.stopPropagation()}>
-                
-                {/* Header */}
-                <div className="cart-header">
-                    <h3>{view === 'cart' ? 'My Cart' : 'Select Delivery Address'}</h3>
-                    <button className="close-btn" onClick={closeCart}>✕</button>
-                </div>
-
-                {/* Body Content */}
-                <div className="cart-body">
-                    {view === 'cart' ? (
-                        /* --- CART ITEMS VIEW --- */
-                        cart.length === 0 ? (
-                            <p className="empty-cart">Your cart is empty.</p>
+                {view === 'cart' ? (
+                    <>
+                        <h2>My Cart</h2>
+                        {cart.length === 0 ? (
+                            <p className="empty-cart-msg">Your cart is empty.</p>
                         ) : (
-                            cart.map((product) => (
-                                <div className="card" key={product.id}>
-                                    <img src={product.image} alt={product.name} className="product-image" />
-                                    <div className="product-details">
-                                        <p>{product.name}</p>
-                                        <div className="quantity-controls">
-                                            <button className="decrement" onClick={() => updateQuantity(product.id, product.qty - 1)}>-</button>
-                                            <p className="display">{product.qty}</p>
-                                            <button className="increment" onClick={() => updateQuantity(product.id, product.qty + 1)}>+</button>
+                            <div className="cart-items">
+                                {cart.map((item, index) => (
+                                    <div key={index} className="cart-item">
+                                        
+                                        <div className="cart-item-info">
+                                            <img src={item.image} alt={item.name} className="cart-item-img" />
+                                            <span className="cart-item-name">{item.name}</span>
+                                        </div>
+
+                                        <div className="cart-item-actions">
+                                            <button className="decrement" onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
+                                            <span className="cart-item-qty">{item.quantity}</span>
+                                            <button className="increment" onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
                                         </div>
                                     </div>
-                                </div>
-                            ))
-                        )
-                    ) : (
-                        /* --- ADDRESS SELECTION VIEW --- */
+                                ))}
+                            </div>
+                        )}
+                        {cart.length > 0 && (
+                            <div className="cart-total-section">
+                                <h3>Total: ₹{calculateTotal()}</h3>
+                                <button className="checkout-btn" onClick={() => setView('address')}>
+                                    Proceed to Checkout
+                                </button>
+                            </div>
+                        )}
+                    </>
+                ) : (
+                    <>
+                        <h2>Delivery Address</h2>
                         <div className="address-container">
                             {savedAddresses.length > 0 && (
                                 <div className="saved-addresses">
                                     <h4>Saved Addresses</h4>
-                                    {savedAddresses.map((addr, idx) => (
-                                        <label key={idx} className="address-label">
+                                    {savedAddresses.map((addr, index) => (
+                                        <label key={index} className="address-label">
                                             <input 
                                                 type="radio" 
                                                 name="address" 
                                                 value={addr} 
-                                                onChange={(e) => { 
-                                                    setSelectedAddress(e.target.value); 
+                                                className="address-radio"
+                                                onChange={(e) => {
+                                                    setSelectedAddress(e.target.value);
                                                     setNewAddress(''); 
-                                                }} 
+                                                }}
                                             />
-                                            <span className="address-text">{addr}</span>
+                                            {addr}
                                         </label>
                                     ))}
                                 </div>
                             )}
                             
-                            <h4>Add New Address</h4>
-                            <textarea 
-                                className="address-input"
-                                rows="3" 
-                                placeholder="Enter your full complete address..." 
-                                value={newAddress} 
-                                onChange={(e) => { 
-                                    setNewAddress(e.target.value); 
-                                    setSelectedAddress(''); 
-                                }}
-                            />
+                            <div className="new-address-box">
+                                <h4>Add New Address</h4>
+                                <textarea 
+                                    className="address-textarea"
+                                    placeholder="Enter full delivery address..."
+                                    value={newAddress}
+                                    onChange={(e) => {
+                                        setNewAddress(e.target.value);
+                                        setSelectedAddress(''); 
+                                    }}
+                                ></textarea>
+                            </div>
+                            
+                            <div className="address-actions">
+                                <button className="back-btn" onClick={() => setView('cart')}>Back</button>
+                                <button className="place-order-btn" onClick={handlePlaceOrder}>
+                                    Place Order
+                                </button>
+                            </div>
                         </div>
-                    )}
-                </div>
-
-                {/* Footer Action Button */}
-                <div className="cart-footer">
-                    {view === 'cart' ? (
-                        <button 
-                            className="checkout-btn"
-                            onClick={() => setView('address')} 
-                            disabled={cart.length === 0}
-                        >
-                            Proceed to Checkout <span>&gt;</span>
-                        </button>
-                    ) : (
-                        <div className="address-actions">
-                            <button className="back-btn" onClick={() => setView('cart')}>Back to Cart</button>
-                            <button className="checkout-btn" onClick={handlePlaceOrder}>Place Order</button>
-                        </div>
-                    )}
-                </div>
-
+                    </>
+                )}
             </div>
         </div>
     );
 }
-
-export default CartPage;

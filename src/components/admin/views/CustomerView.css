@@ -1,0 +1,78 @@
+/* Container and Typography */
+.admin-customers-container {
+    padding: 30px;
+    color: #fff;
+    width: 100%;
+}
+
+.admin-customers-title {
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+    color: #ff7b00;
+    margin-top: 0;
+}
+
+.admin-customers-empty {
+    color: #888;
+    margin-top: 20px;
+}
+
+/* Table Wrapper */
+.admin-table-wrapper {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+/* Main Table Styles */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #1e1e2f;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.admin-table thead tr {
+    background: #2a2a3d;
+    text-align: left;
+}
+
+.admin-table th {
+    padding: 15px;
+    border-bottom: 1px solid #333;
+    font-weight: 600;
+}
+
+.admin-table tbody tr {
+    border-bottom: 1px solid #333;
+}
+
+.admin-table td {
+    padding: 15px;
+    vertical-align: top;
+}
+
+/* Specific Column & Text Styles */
+.address-col {
+    max-width: 300px;
+}
+
+.address-list {
+    margin: 0;
+    padding-left: 20px;
+    color: #4ade80;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.address-list li {
+    margin-bottom: 8px;
+}
+
+.text-muted {
+    color: #aaa;
+}
+
+.text-success {
+    color: #4ade80;
+}

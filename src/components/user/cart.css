@@ -1,27 +1,29 @@
-/* Dark semi-transparent background overlay */
+/* --- 1. Overlay & Sidebar Layout --- */
 .cart-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: transparent; /* Changed from black to completely clear */
+    background: transparent;
     backdrop-filter: blur(4px);
     z-index: 9999;
     display: flex;
     justify-content: flex-end; 
 }
 
-/* The sliding sidebar */
 .cart-sidebar {
     width: 400px;
-    max-width: 100vw; /* Ensures it fits on mobile */
+    max-width: 100vw;
     height: 100vh;
     background-color: var(--bg-main, #ffffff);
+    color: var(--text-main, #333);
     display: flex;
     flex-direction: column;
+    padding: 20px;
     box-shadow: -4px 0 15px rgba(0, 0, 0, 0.2);
     animation: slideIn 0.3s ease-out;
+    overflow-y: auto;
 }
 
 @keyframes slideIn {
@@ -29,85 +31,68 @@
     to { transform: translateX(0); }
 }
 
-/* Header Section */
-.cart-header {
-    padding: 20px;
+.cart-sidebar h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
     border-bottom: 1px solid var(--border-subtle, #eee);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--bg-card, #ffffff);
+    padding-bottom: 15px;
 }
 
-.cart-header h3 {
-    margin: 0;
-    font-size: 1.2rem;
-    color: var(--text-dark, #333);
-}
-
-.close-btn {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--text-dark, #333);
-}
-
-/* Scrollable Body Section */
-.cart-body {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-}
-
-.empty-cart {
+/* --- 2. Cart Items --- */
+.empty-cart-msg {
     text-align: center;
-    color: #888;
+    color: var(--text-muted, #888);
     margin-top: 50px;
 }
 
-/* Existing Card Styles (Modified for Sidebar) */
-.card {
+.cart-items {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 15px;
-    background: var(--bg-card, #ffffff);
+    flex: 1;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-card, rgba(255, 255, 255, 0.05));
     border: 1px solid var(--border-subtle, #eee);
     border-radius: 12px;
     padding: 12px;
-    margin-bottom: 16px;
     box-shadow: var(--shadow-card, 0 2px 4px rgba(0,0,0,0.05));
 }
 
-.product-image {
-    height: 70px;
-    width: 70px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-.product-details {
-    flex-grow: 1;
+.cart-item-info {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    align-items: center;
+    gap: 15px;
 }
 
-.product-details p {
-    font-size: 1rem;
+.cart-item-img {
+    height: 60px;
+    width: 60px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.cart-item-name {
     font-weight: 600;
-    color: var(--text-dark, #333);
-    margin: 0;
+    font-size: 1rem;
 }
 
-.quantity-controls {
+/* --- 3. Quantity Controls --- */
+.cart-item-actions {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
 .increment, .decrement {
-    background-color: var(--bg-main, #fff);
+    background-color: var(--bg-main, #333);
+    color: var(--text-main, #fff); /* Forces visibility in dark mode */
     border: 1px solid var(--border-subtle, #ccc);
     border-radius: 6px;
     width: 28px;
@@ -126,15 +111,39 @@
     border-color: var(--primary-orange, #ff7b00);
 }
 
-.display {
+.cart-item-qty {
     font-size: 1rem;
     font-weight: 700;
     min-width: 24px;
     text-align: center;
-    margin: 0;
 }
 
-/* Address View Styles */
+/* --- 4. Checkout Footer --- */
+.cart-total-section {
+    margin-top: 30px;
+    border-top: 1px solid var(--border-subtle, #eee);
+    padding-top: 20px;
+}
+
+.checkout-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #0c831f; /* Restored your Blinkit Green */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: opacity 0.2s;
+}
+
+.checkout-btn:hover {
+    opacity: 0.9;
+}
+
+/* --- 5. Address View --- */
 .address-container {
     display: flex;
     flex-direction: column;
@@ -151,61 +160,50 @@
     margin-bottom: 10px;
     cursor: pointer;
     background: var(--bg-card, #fafafa);
+    color: var(--text-main, #333);
 }
 
-.address-text {
-    font-size: 0.95rem;
-    color: var(--text-dark, #333);
-    line-height: 1.4;
+.address-radio {
+    margin-top: 4px;
 }
 
-.address-input {
+.address-textarea {
     width: 100%;
     padding: 12px;
+    min-height: 80px;
     border: 1px solid var(--border-subtle, #ccc);
     border-radius: 8px;
     font-family: inherit;
     resize: vertical;
-}
-
-/* Footer Section */
-.cart-footer {
-    padding: 20px;
-    border-top: 1px solid var(--border-subtle, #eee);
-    background-color: var(--bg-card, #ffffff);
-}
-
-.checkout-btn {
-    width: 100%;
-    padding: 14px;
-    background-color: #0c831f; /* Blinkit Green */
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.checkout-btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+    background: var(--bg-main, #fff);
+    color: var(--text-main, #000);
 }
 
 .address-actions {
     display: flex;
     gap: 10px;
+    margin-top: 10px;
 }
 
 .back-btn {
     flex: 1;
     padding: 14px;
     background-color: transparent;
-    border: 1px solid #ccc;
+    color: var(--text-main, #333);
+    border: 1px solid var(--border-subtle, #ccc);
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
+}
+
+.place-order-btn {
+    flex: 1;
+    padding: 14px;
+    background-color: #0c831f; /* Restored your Blinkit Green */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
 }
